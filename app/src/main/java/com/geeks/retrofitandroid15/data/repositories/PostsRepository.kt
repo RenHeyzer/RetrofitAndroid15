@@ -41,41 +41,4 @@ class PostsRepository {
             }
         })
     }
-
-    fun createNewPost(
-        post: Post,
-        onResponse: (post: Post) -> Unit,
-        onFailure: (message: String, t: Throwable) -> Unit
-    ) {
-        apiService.createNewPost(post).enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                if (response.isSuccessful && response.body() != null) {
-                    onResponse(response.body()!!)
-                }
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                onFailure(t.message ?: "Unknown error!", t)
-            }
-        })
-    }
-
-    fun updatePost(
-        postId: Int,
-        post: Post,
-        onResponse: (post: Post) -> Unit,
-        onFailure: (message: String, t: Throwable) -> Unit
-    ) {
-        apiService.updatePost(postId = postId, post = post).enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                if (response.isSuccessful && response.body() != null) {
-                    onResponse(response.body()!!)
-                }
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                onFailure(t.message ?: "Unknown error!", t)
-            }
-        })
-    }
 }
