@@ -7,7 +7,9 @@ import com.bumptech.glide.Glide
 import com.geeks.jikan.data.models.DataItem
 import com.geeks.retrofitandroid15.databinding.ItemAnimeBinding
 
-class AnimeAdapter : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
+class AnimeAdapter(
+    private val onItemClick: (id: Int) -> Unit
+) : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
     private val animeList = mutableListOf<DataItem>()
 
@@ -21,6 +23,12 @@ class AnimeAdapter : RecyclerView.Adapter<AnimeAdapter.AnimeViewHolder>() {
 
     inner class AnimeViewHolder(private val binding: ItemAnimeBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                onItemClick(animeList[adapterPosition].malId)
+            }
+        }
 
         fun onBind(item: DataItem) = with(binding) {
             Glide.with(ivCover.context)

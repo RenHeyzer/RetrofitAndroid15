@@ -3,13 +3,13 @@ package com.geeks.jikan.ui.fragments.anime
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.geeks.jikan.ui.adapters.AnimeAdapter
 import com.geeks.jikan.ui.viewmodels.AnimeViewModel
 import com.geeks.retrofitandroid15.databinding.FragmentAnimeBinding
@@ -19,7 +19,15 @@ class AnimeFragment : Fragment() {
     private var _binding: FragmentAnimeBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<AnimeViewModel>()
-    private val animeAdapter = AnimeAdapter()
+    private val animeAdapter = AnimeAdapter(::onItemClick)
+
+    private fun onItemClick(id: Int) {
+        findNavController().navigate(
+            AnimeFragmentDirections.actionAnimeFragmentToAnimeDetailFragment(
+                id
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +70,8 @@ class AnimeFragment : Fragment() {
                 if (it.success != null) {
                     animeAdapter.updateAnimeList(it.success)
                 } else {
-                    Toast.makeText(context ?: requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context ?: requireContext(), it.errorMessage, Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
